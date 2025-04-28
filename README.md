@@ -21,6 +21,11 @@ Este proyecto proporciona una herramienta web que permite generar y visualizar l
 
 - Un navegador web moderno (Google Chrome, Firefox, Safari, etc.)
 
+## Página Web
+
+Para hacer uso de esta herramienta puede ir al siguiente enlace
+https://fabo2303.github.io/treefy/
+
 ## Instalación
 
 ### Paso 1: Clonar el repositorio
