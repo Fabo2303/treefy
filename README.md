@@ -25,7 +25,7 @@ Este proyecto proporciona una herramienta web que permite generar y visualizar l
 
 ### Paso 1: Clonar el repositorio
 ```bash
-git clone https://github.com/TuUsuario/treefy.git
+git clone https://github.com/Fabo2303/treefy.git
 cd treefy
 ```
 
