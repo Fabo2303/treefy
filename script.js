@@ -28,9 +28,44 @@ document.getElementById("folderInput").addEventListener("change", function() {
 });
 
 function checkFileName(fileName) {
-  const excludedNames = new Set(
-    ['__pycache__', '.venv', 'venv', '.git']
-  );
+  const excludedNames = new Set([
+  // Python
+  '__pycache__', 'venv', '.venv', '.pytest_cache', '.mypy_cache', '.tox', '.coverage',
+
+  // Node.js / JavaScript
+  'node_modules', '.parcel-cache', '.next', 'dist', 'build', 'coverage', '.turbo', '.vercel', '.netlify',
+
+  // Git / Version control
+  '.git', '.hg', '.svn', '.gitlab-ci',
+
+  // Docker
+  '.docker', '.dockerignore', 
+
+  // System / OS
+  '.DS_Store', 'Thumbs.db',
+
+  // IDEs / Editors
+  '.vscode', '.idea', '.nvim', '.history',
+
+  // Web frameworks
+  '.svelte-kit', '.astro', '.nuxt', '.docusaurus',
+
+  // Logs
+  'logs', 'log', '.log',
+
+  // Databases
+  'db', 'database', 'data',
+
+  // Caches
+  '.cache', 'cache', '.gradle', '.yarn-cache',
+
+  // Java / Android
+  'bin', 'out', '.gradle', '.settings',
+
+  // Misc
+  '.env', '.env.local', '.env.production', '.env.development', '.env.test', // Aunque son archivos, a veces como carpetas
+]);
+
   
   for (const excluded of excludedNames) {
     if (fileName.includes(excluded)) {
