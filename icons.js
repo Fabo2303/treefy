@@ -1,0 +1,18 @@
+const iconMap = {
+  folder: '📁',
+  file: '📄',
+  '.py': '🐍',
+  '.txt': '📝',
+  '.md': '📝',
+  '.html': '🌐',
+  '.env': '⚙️',
+  '.gitignore': '⚙️',
+  '.db': '🗄️',
+  'requirements.txt': '📦',
+  'run.py': '🚀',
+  'create_db.py': '🚀',
+  'main.py': '🚀',
+  '.js': '📜',
+  '.css': '🎨',
+  '.json': '📊',
+};
