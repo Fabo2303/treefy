@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Treefy - Generador de Estructura</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>🌳 Treefy</h1>
+    <div id="app">
+        <h2>Sube tu proyecto y genera su estructura</h2>
+        <label for="folderInput" class="custom-file-upload">
+            📁 Elegir carpeta
+        </label>
+        <input type="file" id="folderInput" webkitdirectory directory multiple style="display: none;" />
+        <span id="fileCount">No se han seleccionado archivos</span>
+        <div id="tree-container">📂 Tu estructura aparecerá aquí...</div>
+        <div style="margin-top: 1rem;">
+            <button id="generateTree" onclick="handleSelect()">Generar</button>
+            <button id="copyTree">Copiar</button>
+            <button id="clearTree">Limpiar</button>
+        </div>
+    </div>
+    
+    <script src="icons.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
