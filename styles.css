@@ -1,0 +1,85 @@
+.file-tree {
+    font-family: monospace;
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.file-tree ul {
+    list-style-type: none;
+    padding-left: 20px;
+}
+
+.file-tree li {
+    margin: 5px 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 2rem;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+h1 {
+    text-align: center;
+    color: #4CAF50;
+}
+
+#app {
+    background: #fff;
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+#tree-container {
+    margin-top: 1.5rem;
+    background: #f9f9f9;
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    white-space: pre;
+    overflow-x: auto;
+    font-family: monospace;
+    font-size: 0.95rem;
+}
+
+input[type="file"] {
+    margin-top: 1rem;
+    display: block;
+}
+
+button {
+    margin-top: 1rem;
+    margin-right: 0.5rem;
+    padding: 0.5rem 1rem;
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+.custom-file-upload {
+  display: inline-block;
+  padding: 10px 20px;
+  cursor: pointer;
+  background-color: #4CAF50;
+  color: white;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: background-color 0.3s;
+  margin-bottom: 15px;
+}
+
+.custom-file-upload:hover {
+  background-color: #45a049;
+}
