@@ -3,27 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Treefy - Generador de Estructura</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Treefy | Generador Visual de Estructuras de Carpetas para Proyectos Web</title>
+    <meta name="description" content="Treefy: Genera visualizaciones de estructuras de carpetas para proyectos web, desarrollo de software y organización de archivos. Herramienta online gratuita para desarrolladores.">
+    <meta property="og:title" content="Treefy | Generador de Estructuras de Carpetas">
+    <meta property="og:description" content="Crea fácilmente la estructura de carpetas de tu proyecto.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://fabo2303.github.io/treefy/">
+    <meta property="og:image" content="https://github.com/user-attachments/assets/41ccd18c-83fb-4ff9-8cdf-c419a1d051eb">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://fabo2303.github.io/treefy/" />
+    <meta name="theme-color" content="#2e7d32">
+    <link rel="stylesheet" href="styles.css" media="print" onload="this.media='all'">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
 <body>
-    <h1>🌳 Treefy</h1>
-    <div id="app">
+    <header>
+        <h1>🌳 Treefy</h1>
+    </header>
+
+    <main id="app">
         <h2>Sube tu proyecto y genera su estructura</h2>
+
         <label for="folderInput" class="custom-file-upload">
             📁 Elegir carpeta
         </label>
         <input type="file" id="folderInput" webkitdirectory directory multiple style="display: none;" />
+
         <span id="fileCount">No se han seleccionado archivos</span>
+
         <div id="tree-container">📂 Tu estructura aparecerá aquí...</div>
+
         <div style="margin-top: 1rem;">
-            <button id="generateTree" onclick="handleSelect()">Generar</button>
-            <button id="copyTree">Copiar</button>
-            <button id="clearTree">Limpiar</button>
+            <button id="generateTree" onclick="handleSelect()" aria-label="Generar estructura de carpetas">Generar</button>
+            <button id="copyTree" aria-label="Copiar estructura">Copiar</button>
+            <button id="clearTree" aria-label="Limpiar estructura">Limpiar</button>
         </div>
-    </div>
-    
-    <script src="icons.js"></script>
-    <script src="script.js"></script>
+    </main>
+
+    <footer style="margin-top: 2rem; text-align: center; font-size: 0.8rem;">
+        <p>© 2025 Treefy - Todos los derechos reservados</p>
+    </footer>
+
+    <script src="script.min.js" defer></script>
+    <script src="icons.min.js" defer></script>
 </body>
 </html>

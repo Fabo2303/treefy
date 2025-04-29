@@ -168,4 +168,3 @@ function generateTreeFromObject(tree, depth = 0) {
 
   return result;
 }
-
