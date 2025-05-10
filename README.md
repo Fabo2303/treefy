@@ -55,11 +55,22 @@ cd treefy
 
 ```
 Treefy/
-├── 📜 icons.js
-├── 🌐 index.html
+├── 📁 public/
+│   └── 🖼️ favicon.ico
+├── 📁 src/
+│   ├── 📁 components/
+│   │   ├── 🌌 Button.astro
+│   │   ├── 🌌 Drop.astro
+│   │   ├── 🌌 UploadInput.astro
+│   │   └── 🌌 Welcome.astro
+│   └── 📁 pages/
+│   │   ├── 🌌 index.astro
+│   │   └── 🌌 treefy.astro
+├── 📄 astro.config.mjs
+├── 📦 package-lock.json
+├── 📦 package.json
 ├── 📝 README.md
-├── 📜 script.js
-└── 🎨 styles.css
+└── 📊 tsconfig.json
 ```
 
 ## Consideraciones

@@ -1,0 +1,337 @@
+---
+import Button from "./Button.astro";
+---
+
+<style>
+    .upload-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 12px 20px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        background-color: #fafafa;
+        cursor: pointer;
+        margin-bottom: 20px;
+        transition: background-color 0.2s ease;
+    }
+
+    .upload-wrapper:hover {
+        background-color: #f5f5f5;
+    }
+</style>
+
+<div>
+    <input type="file" id="file-input" multiple style="display: none;" />
+    <div class="upload-wrapper">
+        <Button id="upload-button"> Subir carpeta </Button>
+        <p><span id="file-count"><strong>0</strong></span> archivos subidos</p>
+    </div>
+</div>
+
+<script>
+    const uploadButton = document.getElementById(
+        "upload-button",
+    ) as HTMLButtonElement;
+    const fileInput = document.getElementById("file-input") as HTMLInputElement;
+    const fileCount = document.getElementById("file-count") as HTMLSpanElement;
+    const preview = document.getElementById("preview") as HTMLDivElement;
+    const tree = document.getElementById("tree") as HTMLPreElement;
+
+    document.addEventListener("DOMContentLoaded", () => {
+        configInput();
+    });
+
+    uploadButton.addEventListener("click", () => {
+        fileInput.value = "";
+        fileInput.click();
+    });
+
+    fileInput.addEventListener("change", (event) => {
+        const files = (event.target as HTMLInputElement).files;
+
+        if (!files || files.length === 0) {
+            fileCount.innerText = "0";
+            alert("No se han seleccionado archivos");
+            return;
+        }
+
+        fileCount.innerText = files.length.toString();
+        console.log("Archivos seleccionados:", files);
+        handleFiles(files);
+    });
+
+    function configInput() {
+        const input = document.getElementById("file-input") as HTMLInputElement;
+        input.setAttribute("webkitdirectory", "true");
+        input.setAttribute("directory", "true");
+        input.setAttribute("multiple", "true");
+    }
+
+    function checkFileName(fileName: string): boolean {
+        return !excludedFiles.some((excluded: string) =>
+            fileName.includes(excluded),
+        );
+    }
+
+    function handleFiles(files: FileList): void {
+        const rootFolderName = files[0].webkitRelativePath.split("/")[0];
+
+        const treeStructure: TreeStructure = buildTree(files);
+        const treeString: string =
+            `${rootFolderName}/\n` +
+            generateTreeFromObject(treeStructure[rootFolderName], 0);
+        const treeContainer: HTMLElement | null =
+            document.getElementById("preview");
+        console.log(treeString);
+        if (treeContainer) {
+            tree.textContent = treeString;
+        }
+        generateStructure();
+    }
+
+    function buildTree(files: FileList): TreeStructure {
+        const root: TreeStructure = {};
+
+        for (let i = 0; i < files.length; i++) {
+            const file: File = files[i];
+            const fullPath: string = file.webkitRelativePath;
+
+            if (!checkFileName(fullPath)) {
+                continue;
+            }
+
+            const parts: string[] = fullPath.split("/");
+            let current: TreeStructure = root;
+
+            for (let j = 0; j < parts.length; j++) {
+                const part: string = parts[j];
+                if (!current[part]) {
+                    current[part] = j === parts.length - 1 ? null : {};
+                }
+                if (current[part] !== null) {
+                    current = current[part] as TreeStructure;
+                }
+            }
+        }
+
+        return root;
+    }
+
+    function generateTreeFromObject(
+        tree: TreeStructure | null,
+        depth: number = 0,
+    ): string {
+        if (tree === null) {
+            return "";
+        }
+
+        const folders: string[] = [];
+        const files: string[] = [];
+
+        for (const key of Object.keys(tree)) {
+            if (tree[key] === null) {
+                files.push(key);
+            } else {
+                folders.push(key);
+            }
+        }
+
+        folders.sort((a: string, b: string) => a.localeCompare(b));
+        files.sort((a: string, b: string) => a.localeCompare(b));
+
+        const entries: string[] = [...folders, ...files];
+        let result: string = "";
+
+        entries.forEach((key: string, index: number) => {
+            const isLast: boolean = index === entries.length - 1;
+            const prefix: string =
+                "│   ".repeat(depth) + (isLast ? "└── " : "├── ");
+            const isFolder: boolean = tree[key] !== null;
+            const icon: string = getSimpleIcon(key, isFolder);
+            const displayName: string = isFolder ? `${key}/` : key;
+
+            result += `${prefix}${icon} ${displayName}\n`;
+
+            if (isFolder) {
+                result += generateTreeFromObject(
+                    tree[key] as TreeStructure,
+                    depth + 1,
+                );
+            }
+        });
+
+        return result;
+    }
+
+    function getSimpleIcon(fileName: string, isFolder: boolean): string {
+        if (isFolder) {
+            return iconMap.folder;
+        }
+
+        const lowerName: string = fileName.toLowerCase();
+
+        if (iconMap[lowerName]) {
+            return iconMap[lowerName];
+        }
+
+        const extension: string = "." + lowerName.split(".").pop()!;
+        return iconMap[extension] || iconMap.file;
+    }
+
+    function generateStructure() {
+        handlePreview();
+    }
+
+    function handlePreview() {
+        preview.style.width = "800px";
+        preview.style.margin = "0 auto";
+        preview.style.padding = "20px";
+        preview.style.backgroundColor = "#ffffff";
+        preview.style.borderRadius = "8px";
+        preview.style.boxShadow = "0 2px 6px rgba(0, 0, 0, 0.1)";
+        preview.style.display = "flex";
+        preview.style.flexDirection = "column";
+        preview.style.alignItems = "center";
+    }
+
+    interface TreeStructure {
+        [key: string]: TreeStructure | null;
+    }
+
+    const excludedFiles: string[] = [
+        "node_modules",
+        "dist",
+        "build",
+        "coverage",
+        ".github",
+        ".DS_Store",
+        "logs",
+        "log",
+        ".log",
+        "*.pyc",
+        "__pycache__",
+        "venv",
+        ".venv",
+        ".git",
+        ".expo",
+        ".pytest_cache",
+        ".mypy_cache",
+        ".tox",
+        ".coverage",
+        ".vscode",
+        ".idea",
+        ".nvim",
+        ".history",
+        "bin",
+        "out",
+        ".gradle",
+        ".settings",
+    ];
+
+    const iconMap: Record<string, string> = {
+        folder: "📁",
+        file: "📄",
+
+        // Archivos de configuración
+        ".env": "⚙️",
+        ".gitignore": "⚙️",
+        ".editorconfig": "🛠️",
+        ".eslintrc": "🧹",
+        ".prettierrc": "🎀",
+        ".babelrc": "🔧",
+        ".dockerignore": "🐳",
+
+        // Documentos
+        ".txt": "📝",
+        ".md": "📝",
+        ".pdf": "📚",
+        ".doc": "📄",
+        ".docx": "📄",
+        ".odt": "📄",
+
+        // Web
+        ".html": "🌐",
+        ".htm": "🌐",
+        ".css": "🎨",
+        ".scss": "🎨",
+        ".sass": "🎨",
+        ".less": "🎨",
+        ".js": "📜",
+        ".jsx": "⚛️",
+        ".ts": "📘",
+        ".tsx": "⚛️",
+
+        // Backend
+        ".py": "🐍",
+        ".php": "🐘",
+        ".rb": "💎",
+        ".java": "☕",
+        ".c": "📘",
+        ".cpp": "➕",
+        ".cs": "🎯",
+        ".go": "🐹",
+        ".rs": "🦀",
+        ".swift": "🕊️",
+        ".kt": "🤖", // Kotlin
+
+        // Bases de datos
+        ".db": "🗄️",
+        ".sqlite": "🗄️",
+        ".sql": "🗄️",
+
+        // Datos y configuración
+        ".json": "📊",
+        ".yaml": "📜",
+        ".yml": "📜",
+        ".xml": "🗎",
+        ".csv": "📑",
+
+        // Paquetes y dependencias
+        "requirements.txt": "📦",
+        "package.json": "📦",
+        "package-lock.json": "📦",
+        "yarn.lock": "📦",
+        Pipfile: "📦",
+        "Pipfile.lock": "📦",
+
+        // Scripts especiales
+        "run.py": "🚀",
+        "create_db.py": "🚀",
+        "main.py": "🚀",
+        "app.js": "🚀",
+        "server.js": "🚀",
+        "index.js": "🚪",
+
+        // Otros tipos de archivos
+        ".zip": "🗜️",
+        ".tar": "🗜️",
+        ".gz": "🗜️",
+        ".rar": "🗜️",
+        ".7z": "🗜️",
+
+        // Multimedia
+        ".png": "🖼️",
+        ".jpg": "🖼️",
+        ".jpeg": "🖼️",
+        ".gif": "🎞️",
+        ".ico": "🖼️",
+        ".svg": "🖼️",
+        ".mp3": "🎵",
+        ".wav": "🎶",
+        ".mp4": "🎬",
+        ".mov": "🎬",
+        ".avi": "🎥",
+
+        // Otros lenguajes / archivos interesantes
+        ".sh": "🐚",
+        ".bat": "🖥️",
+        ".ps1": "🖥️",
+        ".vue": "🖼️",
+        ".astro": "🌌",
+        ".svelte": "🔥",
+        ".dart": "🎯",
+        ".r": "📈",
+        ".ipynb": "📓", // Jupyter Notebooks
+    };
+</script>
