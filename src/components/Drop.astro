@@ -1,0 +1,111 @@
+---
+import Button from "./Button.astro";
+import UploadInput from "./UploadInput.astro";
+---
+
+<div id="container">
+    <div id="upload">
+        <h2>Sube tu proyecto y genera su estructura</h2>
+        <p>Haz click en el área de abajo</p>
+        <UploadInput />
+        <div>
+            <Button id="copyTree" aria-label="Copiar estructura">
+                Copiar
+            </Button>
+            <Button id="clearTree" aria-label="Limpiar estructura">
+                Limpiar
+            </Button>
+        </div>
+    </div>
+    <div id="preview">
+        <pre id="tree"></pre>
+    </div>
+</div>
+
+<style>
+    #container {
+        width: 100%;
+        margin: 0 auto;
+        display: flex;
+    }
+
+    #upload {
+        text-align: center;
+        width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #preview {
+        margin-top: 20px;
+    }
+
+    @media screen and (max-width: 800px) {
+        #container {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #upload {
+            width: 100%;
+            padding: 10px;
+        }
+
+        #preview {
+            width: 100%;
+        }
+        
+    }
+</style>
+
+<script>
+    const clearTree = document.getElementById("clearTree") as HTMLButtonElement;
+    const copyTree = document.getElementById("copyTree") as HTMLButtonElement;
+
+    copyTree.addEventListener("click", () => {
+        const treeContainer: HTMLElement | null =
+            document.getElementById("preview");
+        let treeText: string = "";
+
+        if (treeContainer) {
+            treeText = treeContainer.innerText;
+        }
+
+        if (
+            !treeText.trim() ||
+            treeText.trim() === "📂 Tu estructura aparecerá aquí..."
+        ) {
+            alert("No hay estructura para copiar.");
+            return;
+        }
+
+        navigator.clipboard
+            .writeText(treeText)
+            .then(() => {
+                alert("¡Estructura copiada al portapapeles!");
+            })
+            .catch((err) => {
+                console.error("Error al copiar: ", err);
+            });
+    });
+
+    clearTree.addEventListener("click", () => {
+        const treeContainer: HTMLElement | null =
+            document.getElementById("preview");
+        const tree = document.getElementById("tree") as HTMLPreElement;
+        const fileCount = document.getElementById(
+            "file-count",
+        ) as HTMLSpanElement;
+        if (treeContainer) {
+            tree.textContent = ""
+            treeContainer.style.display = "none";
+        }
+        fileCount.innerText = "0";
+    });
+</script>
